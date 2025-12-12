@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Master - Khóa Học Trí Tuệ Nhân Tạo</title>
+    <!-- Nhúng Font Google: Inter (Hiện đại, dễ đọc) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Nhúng FontAwesome cho icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --primary-color: #6366f1; /* Indigo */
+            --secondary-color: #a855f7; /* Purple */
+            --accent-color: #06b6d4; /* Cyan */
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-light: #f8fafc;
+            --text-gray: #94a3b8;
+            --gradient-main: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        /* --- UTILITIES --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--gradient-main);
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .section-title span {
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-gray);
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- HEADER --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 15px 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px; /* Điều chỉnh kích thước logo */
+        }
+        
+        /* Fallback nếu không có ảnh logo */
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            color: var(--text-gray);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding: 160px 0 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Hiệu ứng nền mờ phía sau */
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: var(--primary-color);
+            filter: blur(150px);
+            opacity: 0.2;
+            top: 10%;
+            left: -10%;
+            z-index: -1;
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            flex: 1;
+            padding-right: 50px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .hero h1 span {
+            color: var(--accent-color);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-gray);
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+
+        .hero-image {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-image img {
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* --- ABOUT SECTION --- */
+        .about {
+            padding: 100px 0;
+            background: #162036;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            padding: 40px 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-color);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.25rem;
+        }
+
+        .feature-card p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        /* --- COURSE CONTENT --- */
+        .curriculum {
+            padding: 100px 0;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background: rgba(255,255,255,0.1);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .timeline-item.left { left: 0; text-align: right; }
+        .timeline-item.right { left: 50%; }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--bg-dark);
+            border: 4px solid var(--secondary-color);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .timeline-item.left::after { right: -10px; }
+        .timeline-item.right::after { left: -10px; }
+
+        .timeline-content {
+            padding: 20px 30px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .timeline-content h3 { color: var(--accent-color); margin-bottom: 10px; }
+        .module-tag {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-gray);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        /* --- MENTOR / AUTHOR BOX SECTION (NEW) --- */
+        .mentor-section {
+            padding: 80px 0;
+            background: #162036;
+        }
+
+        /* Style mô phỏng theo hình ảnh yêu cầu */
+        .author-box {
+            background: var(--bg-card); /* Màu nền thẻ tối */
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 450px; /* Giới hạn chiều rộng giống widget */
+            margin: 0 auto; /* Căn giữa */
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .author-header {
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+        }
+
+        .author-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            padding-left: 15px;
+            border-left: 4px solid var(--primary-color); /* Thanh màu xanh bên trái */
+            line-height: 1.2;
+            color: var(--text-light);
+        }
+
+        .author-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .author-avatar {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .author-info h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text-light);
+        }
+
+        .author-code {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            font-style: italic;
+            display: block;
+        }
+
+        .author-bio {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.05); /* Đường gạch mờ ngăn cách */
+        }
+
+        /* --- CTA SECTION --- */
+        .cta-section {
+            padding: 80px 0;
+            background: var(--gradient-main);
+            text-align: center;
+            border-radius: 20px;
+            margin: 50px 20px;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .cta-btn-white {
+            background: white;
+            color: var(--primary-color);
+            padding: 15px 40px;
+            font-size: 1.1rem;
+        }
+        .cta-btn-white:hover {
+            background: #f1f5f9;
+            transform: scale(1.05);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: #0b1120;
+            padding: 60px 0 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+
+        .footer-info p {
+            color: var(--text-gray);
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .footer-links h4 {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .footer-links ul li { margin-bottom: 10px; }
+        .footer-links a:hover { color: var(--secondary-color); text-decoration: underline; }
+
+        .social-icons a {
+            display: inline-flex;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .social-icons a:hover { background: var(--primary-color); }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-gray);
+            font-size: 0.85rem;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hero { flex-direction: column; padding-top: 120px; text-align: center; }
+            .hero-content { padding-right: 0; margin-bottom: 50px; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { margin: 0 auto 30px; }
+            
+            .nav-links { display: none; } /* Ẩn menu trên mobile đơn giản */
+            
+            .timeline::after { left: 31px; }
+            .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; }
+            .timeline-item.left, .timeline-item.right { left: 0; text-align: left; }
+            .timeline-item.left::after, .timeline-item.right::after { left: 21px; }
+            
+            .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <!-- Placeholder cho logo.png -->
+                    <img src="logo.png" alt="AI Master Logo" onerror="this.style.display='none'; document.querySelector('.logo-text').style.display='block';">
+                    <span class="logo-text" style="display:none;">AI MASTER</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#about">Giới thiệu</a></li>
+                    <li><a href="#curriculum">Nội dung</a></li>
+                    <li><a href="#mentors">Giảng viên</a></li>
+                    <li><a href="#contact" class="btn btn-primary" style="padding: 8px 20px;">Đăng ký ngay</a></li>
+                </ul>
+                <!-- Icon menu mobile có thể thêm vào đây -->
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container" style="display: flex; align-items: center; width: 100%; flex-wrap: wrap;">
+            <div class="hero-content">
+                <h1>Làm Chủ <br><span>Trí Tuệ Nhân Tạo</span><br>Kiến Tạo Tương Lai</h1>
+                <p>Khóa học toàn diện từ cơ bản đến chuyên sâu. Trang bị kỹ năng Python, Machine Learning và Deep Learning để đón đầu xu hướng công nghệ 4.0.</p>
+                <a href="#register" class="btn btn-primary">Bắt Đầu Học Ngay <i class="fas fa-arrow-right"></i></a>
+                <a href="#curriculum" class="btn" style="color: white; margin-left: 10px; border: 1px solid rgba(255,255,255,0.2);">Xem lộ trình</a>
+            </div>
+            <div class="hero-image">
+                <!-- Hình ảnh minh họa AI, dùng link placeholder để demo -->
+                <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="AI Robot Face">
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">Tại sao chọn <span>AI Master?</span></h2>
+            <p class="section-subtitle">Chúng tôi không chỉ dạy lập trình, chúng tôi dạy tư duy giải quyết vấn đề bằng dữ liệu.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-code"></i></div>
+                    <h3>Thực hành 80%</h3>
+                    <p>Học qua dự án thực tế (Project-based learning). Xây dựng chatbot, nhận diện khuôn mặt ngay trong khóa học.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-chart-network"></i></div>
+                    <h3>Lộ trình tinh gọn</h3>
+                    <p>Đi thẳng vào trọng tâm. Loại bỏ các lý thuyết toán học rườm rà không cần thiết cho ứng dụng.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-certificate"></i></div>
+                    <h3>Chứng chỉ uy tín</h3>
+                    <p>Nhận chứng chỉ hoàn thành khóa học và hỗ trợ kết nối việc làm với các doanh nghiệp công nghệ.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Curriculum Section -->
+    <section id="curriculum" class="curriculum">
+        <div class="container">
+            <h2 class="section-title">Lộ trình <span>Học tập</span></h2>
+            <p class="section-subtitle">Từ Zero đến Hero trong 12 tuần</p>
+
+            <div class="timeline">
+                <!-- Module 1 -->
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <span class="module-tag">Module 1 - 2 Tuần</span>
+                        <h3>Python cho Data Science</h3>
+                        <p>Nắm vững cú pháp Python, thư viện NumPy, Pandas và trực quan hóa dữ liệu với Matplotlib.</p>
+                    </div>
+                </div>
+                <!-- Module 2 -->
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <span class="module-tag">Module 2 - 3 Tuần</span>
+                        <h3>Machine Learning Cơ bản</h3>
+                        <p>Hồi quy tuyến tính, Phân loại, Clustering và các thuật toán học máy kinh điển.</p>
+                    </div>
+                </div>
+                <!-- Module 3 -->
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <span class="module-tag">Module 3 - 4 Tuần</span>
+                        <h3>Deep Learning & Computer Vision</h3>
+                        <p>Mạng nơ-ron nhân tạo (CNN), xử lý ảnh và nhận diện vật thể với TensorFlow/PyTorch.</p>
+                    </div>
+                </div>
+                <!-- Module 4 -->
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <span class="module-tag">Module 4 - 3 Tuần</span>
+                        <h3>Generative AI & LLMs</h3>
+                        <p>Làm việc với các mô hình ngôn ngữ lớn (GPT), Prompt Engineering và ứng dụng vào thực tế.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mentor / Author Section (NEW) -->
+    <section id="mentors" class="mentor-section">
+        <div class="container">
+            <h2 class="section-title">Giảng Viên <span>Hướng Dẫn</span></h2>
+            <p class="section-subtitle">Người đồng hành cùng bạn chinh phục kiến thức.</p>
+            
+            <!-- Author Box Styled Like Image -->
+            <div class="author-box">
+                <div class="author-header">
+                    <div class="author-title">Về Tác Giả</div>
+                </div>
+                
+                <div class="author-profile">
+                    <!-- Đã cập nhật: Dùng file avatar.jpg, nếu không có sẽ tự hiện avatar mặc định -->
+                    <img src="avatar.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Dai+Nam&background=random&size=128'" alt="Avatar Tác Giả" class="author-avatar">
+                    <div class="author-info">
+                        <h4>Lê Hữu Đại Nam</h4>
+                        <span class="author-code">Mã số: PK04646</span>
+                    </div>
+                </div>
+                
+                <div class="author-bio">
+                    Chia sẻ những kiến thức và kho tài liệu về các mẹo sử dụng AI.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <div class="container">
+        <section id="register" class="cta-section">
+            <h2>Sẵn sàng gia nhập kỷ nguyên AI?</h2>
+            <p style="margin-bottom: 30px; opacity: 0.9;">Đăng ký ngay hôm nay để nhận ưu đãi giảm 30% học phí.</p>
+            <a href="#" class="btn cta-btn-white">Đăng Ký Tư Vấn Ngay</a>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-info">
+                    <h3 style="color: white; font-size: 1.5rem; margin-bottom: 15px;">AI MASTER</h3>
+                    <p>Trung tâm đào tạo Trí tuệ nhân tạo hàng đầu. Sứ mệnh của chúng tôi là phổ cập AI cho mọi người Việt.</p>
+                    <div class="social-icons" style="margin-top: 20px;">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Liên kết</h4>
+                    <ul>
+                        <li><a href="#">Về chúng tôi</a></li>
+                        <li><a href="#">Khóa học</a></li>
+                        <li><a href="#">Blog công nghệ</a></li>
+                        <li><a href="#">Tuyển dụng</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Liên hệ</h4>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt" style="width: 20px;"></i> Buôn Ma Thuột</li>
+                        <li><i class="fas fa-phone" style="width: 20px;"></i> 0355541454</li>
+                        <li><i class="fas fa-envelope" style="width: 20px;"></i> namlhdpk04646@fpt.edu.vn</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 AI Master. All rights reserved. Designed by AI.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
